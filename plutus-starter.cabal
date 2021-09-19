@@ -41,9 +41,7 @@ common lang
 library
     import: lang
     exposed-modules:
-      MyModule
-      Plutus.Contracts.Game
-      Plutus.Contracts.Gift
+      Plutus.Contracts.SimpleNFT
     build-depends:
       base >= 4.9 && < 5,
       aeson,
@@ -54,6 +52,7 @@ library
       plutus-contract,
       plutus-tx-plugin,
       plutus-tx,
+      utf8-string,
       text,
       plutus-ledger
     hs-source-dirs: src examples/src
@@ -77,7 +76,7 @@ test-suite plutus-example-projects-test
     tasty-hunit -any,
     tasty-hedgehog >=0.2.0.0
 
-executable plutus-starter-pab
+executable simplenft
   import: lang
   main-is: Main.hs
   hs-source-dirs: pab

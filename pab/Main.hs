@@ -24,7 +24,9 @@ import qualified Plutus.PAB.Effects.Contract.Builtin as Builtin
 import           Plutus.PAB.Simulator                (SimulatorEffectHandlers)
 import qualified Plutus.PAB.Simulator                as Simulator
 import qualified Plutus.PAB.Webserver.Server         as PAB.Server
-import           Plutus.Contracts.Gift               as Gift
+import           Plutus.Contracts.SimpleNFT                as NFT
+
+
 main :: IO ()
 main = void $ Simulator.runSimulationWith handlers $ do
     Simulator.logString @(Builtin StarterContracts) "Starting plutus-starter PAB webserver on port 8080. Press enter to exit."
@@ -47,7 +49,7 @@ main = void $ Simulator.runSimulationWith handlers $ do
     shutdown
 
 data StarterContracts =
-    GiftContract
+    NFTContract
 
     deriving (Eq, Ord, Show, Generic)
 
@@ -69,11 +71,11 @@ instance Pretty StarterContracts where
     pretty = viaShow
 
 instance Builtin.HasDefinitions StarterContracts where
-    getDefinitions = [GiftContract]
+    getDefinitions = [NFTContract]
     getSchema =  \case
-        GiftContract -> Builtin.endpointsToSchemas @Gift.GiftSchema
+        NFTContract -> Builtin.endpointsToSchemas @NFT.NFTSchema
     getContract = \case
-        GiftContract ->  SomeBuiltin (Gift.gift @ContractError)  
+        NFTContract ->  SomeBuiltin (NFT.nft @ContractError)  
 
 handlers :: SimulatorEffectHandlers (Builtin StarterContracts)
 handlers =
