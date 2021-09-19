@@ -74,11 +74,8 @@ mint tn = do
             void $ awaitTxConfirmed $ txId ledgerTx
             Contract.logInfo @String $ printf "forged %s" (show val)
 
-
 mint' :: Promise () NFTSchema Text ()
 mint' = endpoint @"mint" mint
-
-
 
 nft :: AsContractError e => Contract () NFTSchema Text e
 nft = do
