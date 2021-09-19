@@ -42,6 +42,7 @@ import           Control.Monad         (void)
 import qualified Data.ByteString.Char8 as C
 import qualified Data.Map              as Map
 import           Data.Maybe            (catMaybes)
+import           Data.Text              as Text
 import           Ledger                (Address, Datum (Datum), ScriptContext, TxOutTx, Validator, Value)
 import qualified Ledger
 import qualified Ledger.Ada            as Ada

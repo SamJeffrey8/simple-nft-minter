@@ -43,6 +43,7 @@ library
     exposed-modules:
       MyModule
       Plutus.Contracts.Game
+      Plutus.Contracts.Gift
     build-depends:
       base >= 4.9 && < 5,
       aeson,
@@ -53,6 +54,7 @@ library
       plutus-contract,
       plutus-tx-plugin,
       plutus-tx,
+      text,
       plutus-ledger
     hs-source-dirs: src examples/src
 

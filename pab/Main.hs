@@ -18,20 +18,19 @@ import           Data.Aeson                          (FromJSON (..), ToJSON (..)
 import           Data.Default                        (def)
 import           Data.Text.Prettyprint.Doc           (Pretty (..), viaShow)
 import           GHC.Generics                        (Generic)
-import           Plutus.Contract                     (ContractError)
+import           Plutus.Contract                     (ContractError, selectList)
 import           Plutus.PAB.Effects.Contract.Builtin (Builtin, SomeBuiltin (..), BuiltinHandler(contractHandler))
 import qualified Plutus.PAB.Effects.Contract.Builtin as Builtin
 import           Plutus.PAB.Simulator                (SimulatorEffectHandlers)
 import qualified Plutus.PAB.Simulator                as Simulator
 import qualified Plutus.PAB.Webserver.Server         as PAB.Server
-import           Plutus.Contracts.Game               as Game
-
+import           Plutus.Contracts.Gift               as Gift
 main :: IO ()
 main = void $ Simulator.runSimulationWith handlers $ do
     Simulator.logString @(Builtin StarterContracts) "Starting plutus-starter PAB webserver on port 8080. Press enter to exit."
     shutdown <- PAB.Server.startServerDebug
     -- Example of spinning up a game instance on startup
-    -- void $ Simulator.activateContract (Wallet 1) GameContract
+    -- void $ Simulator.activateContract (Wallet 1) GiftContract
     -- You can add simulator actions here:
     -- Simulator.observableState
     -- etc.
@@ -48,7 +47,8 @@ main = void $ Simulator.runSimulationWith handlers $ do
     shutdown
 
 data StarterContracts =
-    GameContract
+    GiftContract
+
     deriving (Eq, Ord, Show, Generic)
 
 -- NOTE: Because 'StarterContracts' only has one constructor, corresponding to
@@ -69,14 +69,13 @@ instance Pretty StarterContracts where
     pretty = viaShow
 
 instance Builtin.HasDefinitions StarterContracts where
-    getDefinitions = [GameContract]
+    getDefinitions = [GiftContract]
     getSchema =  \case
-        GameContract -> Builtin.endpointsToSchemas @Game.GameSchema
+        GiftContract -> Builtin.endpointsToSchemas @Gift.GiftSchema
     getContract = \case
-        GameContract -> SomeBuiltin (Game.game @ContractError)
+        GiftContract ->  SomeBuiltin (Gift.gift @ContractError)  
 
 handlers :: SimulatorEffectHandlers (Builtin StarterContracts)
 handlers =
     Simulator.mkSimulatorHandlers def def
     $ interpret (contractHandler Builtin.handleBuiltin)
-
